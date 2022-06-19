@@ -1,3 +1,15 @@
 @tailwind base;
+@layer base {
+    h1 {
+      @apply text-3xl;
+    }
+    h2 {
+      @apply text-xl;
+    }
+    body {
+        font-size: 16px;
+        @apply leading-8;
+    }
+  }
 @tailwind components;
 @tailwind utilities;
