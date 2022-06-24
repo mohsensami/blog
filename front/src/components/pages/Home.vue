@@ -1,5 +1,6 @@
 <template>
-  <section class="bg-gray-100 py-8">
+  <div class="">
+    <section class="bg-gray-100 py-8">
     <div class="container">
       <div class="flex flex-col sm:flex-row gap-4">
       <div class="sm:flex-1"><img class="ring-blue-100 ring-offset-2 ring-2" src="https://via.placeholder.com/600x400.jpeg"></div>
@@ -11,70 +12,47 @@
     </div>
   </section>
   <section class="py-8">
-    <div class="container grid grid-cols-4 gap-4">
-      <div class="bg-gray-100">
-        <img src="https://via.placeholder.com/400x250">
+    <div class="container grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
+      <div v-for="post in posts" :key="post.id" class="bg-gray-100">
+        <img :src="post._embedded['wp:featuredmedia'][0].media_details.sizes.medium.source_url">
+
+
         <div class="py-2 px-4">
-          <h3>Title for article</h3>
-          <p>Lorem ipsum dolor sit amet consectetur, adipisicing elit. Totam recusandae nisi dolorum eos, cupiditate similique, pariatur eum a sint dolorem assumenda provident rerum sapiente modi tempora consequuntur quas facere. Amet?</p>
+          <h3>{{ post.title.rendered }}</h3>
+          <div v-html="post.content.rendered"></div>
         </div>
       </div>
-      <div class="bg-gray-100">
-        <img src="https://via.placeholder.com/400x250">
-        <div class="py-2 px-4">
-          <h3>Title for article</h3>
-          <p>Lorem ipsum dolor sit amet consectetur, adipisicing elit. Totam recusandae nisi dolorum eos, cupiditate similique, pariatur eum a sint dolorem assumenda provident rerum sapiente modi tempora consequuntur quas facere. Amet?</p>
-        </div>
-      </div>
-      <div class="bg-gray-100">
-        <img src="https://via.placeholder.com/400x250">
-        <div class="py-2 px-4">
-          <h3>Title for article</h3>
-          <p>Lorem ipsum dolor sit amet consectetur, adipisicing elit. Totam recusandae nisi dolorum eos, cupiditate similique, pariatur eum a sint dolorem assumenda provident rerum sapiente modi tempora consequuntur quas facere. Amet?</p>
-        </div>
-      </div>
-      <div class="bg-gray-100">
-        <img src="https://via.placeholder.com/400x250">
-        <div class="py-2 px-4">
-          <h3>Title for article</h3>
-          <p>Lorem ipsum dolor sit amet consectetur, adipisicing elit. Totam recusandae nisi dolorum eos, cupiditate similique, pariatur eum a sint dolorem assumenda provident rerum sapiente modi tempora consequuntur quas facere. Amet?</p>
-        </div>
-      </div>
-      <div class="bg-gray-100">
-        <img src="https://via.placeholder.com/400x250">
-        <div class="py-2 px-4">
-          <h3>Title for article</h3>
-          <p>Lorem ipsum dolor sit amet consectetur, adipisicing elit. Totam recusandae nisi dolorum eos, cupiditate similique, pariatur eum a sint dolorem assumenda provident rerum sapiente modi tempora consequuntur quas facere. Amet?</p>
-        </div>
-      </div>
-      <div class="bg-gray-100">
-        <img src="https://via.placeholder.com/400x250">
-        <div class="py-2 px-4">
-          <h3>Title for article</h3>
-          <p>Lorem ipsum dolor sit amet consectetur, adipisicing elit. Totam recusandae nisi dolorum eos, cupiditate similique, pariatur eum a sint dolorem assumenda provident rerum sapiente modi tempora consequuntur quas facere. Amet?</p>
-        </div>
-      </div>
-      <div class="bg-gray-100">
-        <img src="https://via.placeholder.com/400x250">
-        <div class="py-2 px-4">
-          <h3>Title for article</h3>
-          <p>Lorem ipsum dolor sit amet consectetur, adipisicing elit. Totam recusandae nisi dolorum eos, cupiditate similique, pariatur eum a sint dolorem assumenda provident rerum sapiente modi tempora consequuntur quas facere. Amet?</p>
-        </div>
-      </div>
-      <div class="bg-gray-100">
-        <img src="https://via.placeholder.com/400x250">
-        <div class="py-2 px-4">
-          <h3>Title for article</h3>
-          <p>Lorem ipsum dolor sit amet consectetur, adipisicing elit. Totam recusandae nisi dolorum eos, cupiditate similique, pariatur eum a sint dolorem assumenda provident rerum sapiente modi tempora consequuntur quas facere. Amet?</p>
-        </div>
-      </div>
+      
     </div>
   </section>
+  </div>
 </template>
 
 <script>
+import { ref } from "vue";
 export default {
-  
+  setup() {
+    const posts = ref([])
+    function getPosts() {
+      fetch("https://webgaran.ir/wp-json/wp/v2/posts?_embed")
+        .then(async (response) => {
+          const data = await response.json();
+          // check for error response
+          if (!response.ok) {
+            // get error message from body or default to response statusText
+            const error = (data && data.message) || response.statusText;
+            return Promise.reject(error);
+          }
+          posts.value = data;
+        })
+        .catch((error) => {
+          this.errorMessage = error;
+          console.error("There was an error!", error);
+        });
+    }
+    getPosts();
+    return {posts, getPosts}
+  }
 }
 </script>
 
