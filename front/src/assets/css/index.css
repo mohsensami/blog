@@ -4,14 +4,14 @@
       @apply text-3xl;
     }
     h2 {
-      @apply text-xl;
-    },
+      @apply text-3xl;
+    }
     h3 {
-      @apply text-xl;
-    },
+      @apply text-2xl;
+    }
     body {
         font-size: 16px;
-        @apply leading-8;
+        @apply leading-9;
     }
   }
 @tailwind components;

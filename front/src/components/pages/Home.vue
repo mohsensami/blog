@@ -10,16 +10,20 @@
       </div>
     </div>
     </div>
-  </section>
+  </section> 
   <section class="py-8">
     <div class="container grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
       <div v-for="post in posts" :key="post.id" class="bg-gray-100">
-        <img :src="post._embedded['wp:featuredmedia'][0].media_details.sizes.medium.source_url">
-
-
+        <div class="h-64 sm:h-40 overflow-hidden">
+          <img class="w-full" :src="post._embedded['wp:featuredmedia'][0].media_details.sizes.medium.source_url">
+        </div>
         <div class="py-2 px-4">
-          <h3>{{ post.title.rendered }}</h3>
-          <div v-html="post.content.rendered"></div>
+          <h3>
+            <router-link :to="{ name: 'postId', params: { id: post.id } }">
+            {{ post.title.rendered }}
+            </router-link>
+          </h3>
+          <div v-html="post.excerpt.rendered"></div>
         </div>
       </div>
       
