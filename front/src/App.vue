@@ -3,6 +3,7 @@
 // Check out https://vuejs.org/api/sfc-script-setup.html#script-setup
 
 import Header from './components/section/Header.vue';
+import Footer from './components/section/Footer.vue';
 
 </script>
 
@@ -12,6 +13,8 @@ import Header from './components/section/Header.vue';
   <div>
     <router-view></router-view>
   </div>
+
+  <Footer />
 </template>
 
 <style>
